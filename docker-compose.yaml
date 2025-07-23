@@ -1,0 +1,30 @@
+version: "3.10"
+
+services:
+  mock-users:
+    container_name: mock-users
+    build:
+      context: ./services/mock-users-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
+
+  spa-app:
+    build:
+      context: ./services/spa
+      dockerfile: Dockerfile
+    container_name: spa-app
+    ports:
+      - "3000:80"
+    depends_on:
+      - mock-users
+
+  mpa-app:
+    build:
+      context: ./services/mpa
+      dockerfile: Dockerfile
+    container_name: mpa-app
+    ports:
+      - "3002:80"
+    depends_on:
+      - mock-users
